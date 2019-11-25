@@ -2,8 +2,10 @@ package com.trackerua.gps.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Table(name = "usr")
+@EqualsAndHashCode(of = {"id"})
 public class User implements Serializable {
     @Id
     @JsonView(View.Id.class)
@@ -24,11 +27,17 @@ public class User implements Serializable {
 
     private String email;
 
-    private String gender;
-
-    private String locale;
-
     private String picture;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group_id;
+
+    private Boolean is_admin;
+
+    private Long pos_x;
+
+    private Long pos_y;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastVisit;
